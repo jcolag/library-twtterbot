@@ -1,0 +1,13 @@
+{
+  "name": "replibrary",
+  "version": "1.0.0",
+  "description": "A simple twitterbot to reply to requests with relevant URLs",
+  "main": "index.js",
+  "repository": "https://github.com/jcolag/library-twtterbot.git",
+  "author": "John Colagioia <jcolag@gmail.com>",
+  "license": "AGPLv3",
+  "private": false,
+  "dependencies": {
+    "twit": "^2.2.11"
+  }
+}

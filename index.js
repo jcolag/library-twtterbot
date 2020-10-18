@@ -5,14 +5,15 @@ const configFile = fs.readFileSync('config.json');
 const config = JSON.parse(configFile);
 const twitter = new twit(config);
 
-twitter.post(
-  'statuses/update',
-  {
-    status: "Test post; please ignore."
-  },
-  (err, data, response) => {
-    if (err) {
-      console.log("Couldn't tweet: ", err);
-    }
-  });
+const stream = twitter.stream(
+  'statuses/filter',
+  { follow: [ config.user_id ] }
+);
+
+stream.on('tweet', (tweet) => {
+  console.log(JSON.stringify(tweet, ' ', 2));
+});
+stream.on('error', (error) => {
+  console.log(JSON.stringify(error, ' ', 2));
+});
 

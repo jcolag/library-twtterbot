@@ -9,4 +9,4 @@ This project is intended to make it easier to make sure that consistent links ar
  >
  > **replybrary**:  I have this for superconductors: https://www.futurity.org/superconductor-room-temperature-2455692/
 
-My plan is to use @replybrary itself for sociological links around which policies work and which do not, but that's just my personal agenda.  If *you* use this, you should try to fact-check your links before including them, otherwise your project to enlighten people will flop quickly.
+My plan is to use [@replybrary](https://twitter.com/replybrary) itself for sociological links around which policies work and which do not, but that's just my personal agenda.  If *you* use this, you should try to fact-check your links before including them, otherwise your project to enlighten people will flop quickly.

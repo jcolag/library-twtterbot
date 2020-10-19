@@ -1,10 +1,9 @@
 const fs = require('fs');
 const twit = require('twit');
 
-const configFile = fs.readFileSync('config.json');
-const config = JSON.parse(configFile);
+const config = JSON.parse(fs.readFileSync('config.json'));
+const library = JSON.parse(fs.readFileSync('urls.json'));
 const twitter = new twit(config);
-
 const stream = twitter.stream(
   'statuses/filter',
   { follow: [ config.user_id ] }

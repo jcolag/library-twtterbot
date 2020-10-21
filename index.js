@@ -11,6 +11,16 @@ const stream = twitter.stream(
 
 stream.on('tweet', (tweet) => {
   console.log(JSON.stringify(tweet, ' ', 2));
+  twitter.post(
+    'statuses/update',
+    {
+      status: "Test post; please ignore."
+    },
+    (err, data, response) => {
+      if (err) {
+        console.log("Couldn't tweet: ", err);
+      }
+    });
 });
 stream.on('error', (error) => {
   console.log(JSON.stringify(error, ' ', 2));

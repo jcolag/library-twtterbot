@@ -16,3 +16,18 @@ stream.on('error', (error) => {
   console.log(JSON.stringify(error, ' ', 2));
 });
 
+function getUrlsForKeywords(keywords) {
+  const urls = [];
+
+  for (let i = 0; i < library.length; i++) {
+    const choice = library[i];
+
+    for (let j = 0; j < keywords.length; j++) {
+      if (choice.keywords.indexOf(keywords[j]) >= 0) {
+        urls.push(choice.url);
+      }
+    }
+  }
+
+  return [...new Set(urls)].join(' ');
+}

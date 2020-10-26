@@ -10,15 +10,39 @@ const stream = twitter.stream(
 );
 
 stream.on('tweet', (tweet) => {
-  console.log(JSON.stringify(tweet, ' ', 2));
+  const id = tweet.id_str;
+  const text = tweet.text;
+  const whoFrom = tweet.user.screen_name;
+  const start = text.indexOf(`@${config.screen_name}`) +
+    config.screen_name.length + 1;
+  const keywords = text.slice(start);
+  const urls = getUrlsForKeywords(keywords.split(' '));
+  let status;
+
+  if (text.indexOf('👀') >= 0) {
+    return;
+  }
+
+  if (urls.length > 0) {
+    status = `Here's what I found for ${keywords.trim()}: ${urls}`;
+  } else {
+    status = `Sorry, I couldn't find anything on ${keywords.trim()}.`;
+  }
+
   twitter.post(
     'statuses/update',
     {
-      status: "Test post; please ignore."
+      in_reply_to_screen_name: whoFrom,
+      in_reply_to_status_id: tweet.id,
+      in_reply_to_status_id: tweet.id_str,
+      in_reply_to_user_id: tweet.user.id,
+      in_reply_to_user_id_str: tweet.user.id_str,
+      status: `@${whoFrom} 👀 ${status}`,
     },
     (err, data, response) => {
       if (err) {
-        console.log("Couldn't tweet: ", err);
+        console.log("Couldn't tweet:");
+        console.log(JSON.stringify(err, ' ', 2));
       }
     });
 });

@@ -19,7 +19,9 @@ stream.on('tweet', (tweet) => {
   const urls = getUrlsForKeywords(keywords.split(' '));
   let status;
 
-  if (text.indexOf('👀') >= 0) {
+  if (urls.indexOf('http') < 0) {
+    status = urls;
+  } else if (text.indexOf('👀') >= 0) {
     return;
   }
 

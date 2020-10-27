@@ -2,6 +2,7 @@ const fs = require('fs');
 const twit = require('twit');
 
 const config = JSON.parse(fs.readFileSync('config.json'));
+const ids = JSON.parse(fs.readFileSync('processed_ids.json));
 const library = JSON.parse(fs.readFileSync('urls.json'));
 const twitter = new twit(config);
 const stream = twitter.stream(
@@ -18,6 +19,9 @@ stream.on('tweet', (tweet) => {
   const keywords = text.slice(start);
   const urls = getUrlsForKeywords(keywords.split(' '));
   let status;
+
+  ids.push(id);
+  fs.writeFileSync('processed_ids.json', JSON.stringify(ids, ' ', 2));
 
   if (urls.indexOf('http') < 0) {
     status = urls;

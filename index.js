@@ -21,7 +21,7 @@ stream.on('tweet', (tweet) => {
 
   if (urls.indexOf('http') < 0) {
     status = urls;
-  } else if (text.indexOf('👀') >= 0) {
+  } else if (whoFrom === config.screen_name) {
     return;
   }
 

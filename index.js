@@ -43,7 +43,7 @@ stream.on('tweet', (tweet) => {
       in_reply_to_status_id: tweet.id_str,
       in_reply_to_user_id: tweet.user.id,
       in_reply_to_user_id_str: tweet.user.id_str,
-      status: `@${whoFrom} 👀 ${status}`,
+      status: `@${whoFrom} ${status}`,
     },
     (err, data, response) => {
       if (err) {

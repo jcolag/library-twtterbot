@@ -30,7 +30,17 @@ stream.on('tweet', (tweet) => {
   }
 
   if (urls.length > 0) {
-    status = `Here's what I found for ${keywords.trim()}: ${urls}`;
+    const base = "Here's what I found for ";
+    const more = ' and 00 more';
+    const extra = 0;
+
+    status = `${base}${keywords.trim()}: ${urls}`;
+    while (status.replaceAll(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
+      extra += 1;
+      urls.pop();
+      const end = more.replace('00', extra);
+      status = `${base}${keywords.trim()}: ${urls}${more}`;
+    }
   } else {
     status = `Sorry, I couldn't find anything on ${keywords.trim()}.`;
   }

@@ -23,8 +23,8 @@ stream.on('tweet', (tweet) => {
   ids.push(id);
   fs.writeFileSync('processed_ids.json', JSON.stringify(ids, ' ', 2));
 
-  if (urls.indexOf('http') < 0) {
-    status = urls;
+  if (urls.join(' ').indexOf('http') < 0) {
+    status = urls.join(' ').;
   } else if (whoFrom === config.screen_name) {
     return;
   }
@@ -34,12 +34,12 @@ stream.on('tweet', (tweet) => {
     const more = ' and 00 more';
     const extra = 0;
 
-    status = `${base}${keywords.trim()}: ${urls}`;
+    status = `${base}${keywords.trim()}: ${urls.join(' ').}`;
     while (status.replaceAll(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
       extra += 1;
       urls.pop();
       const end = more.replace('00', extra);
-      status = `${base}${keywords.trim()}: ${urls}${more}`;
+      status = `${base}${keywords.trim()}: ${urls.join(' ').}${more}`;
     }
   } else {
     status = `Sorry, I couldn't find anything on ${keywords.trim()}.`;
@@ -79,5 +79,5 @@ function getUrlsForKeywords(keywords) {
     }
   }
 
-  return [...new Set(urls)].join(' ');
+  return [...new Set(urls)];
 }

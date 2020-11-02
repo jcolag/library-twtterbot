@@ -8,6 +8,7 @@
   "license": "AGPLv3",
   "private": false,
   "dependencies": {
-    "twit": "^2.2.11"
+    "twit": "^2.2.11",
+    "winston": "^3.3.3"
   }
 }

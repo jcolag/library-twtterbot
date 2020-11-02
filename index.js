@@ -1,5 +1,6 @@
 const fs = require('fs');
 const twit = require('twit');
+const winston = require('winston');
 
 const config = JSON.parse(fs.readFileSync('config.json'));
 const ids = JSON.parse(fs.readFileSync('processed_ids.json));
@@ -9,6 +10,17 @@ const stream = twitter.stream(
   'statuses/filter',
   { follow: [ config.user_id ] }
 );
+const logger = winston.createLogger({
+  level: 'info',
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  defaultMeta: { service: config.screen_name },
+  transports: [
+    new winston.transports.File({ filename: `${config.screen_name}` })
+  ],
+});
 
 stream.on('tweet', (tweet) => {
   const id = tweet.id_str;
@@ -57,13 +69,13 @@ stream.on('tweet', (tweet) => {
     },
     (err, data, response) => {
       if (err) {
-        console.log("Couldn't tweet:");
-        console.log(JSON.stringify(err, ' ', 2));
+        logger.error("Couldn't tweet:");
+        logger.error(JSON.stringify(err, ' ', 2));
       }
     });
 });
 stream.on('error', (error) => {
-  console.log(JSON.stringify(error, ' ', 2));
+  logger.error(JSON.stringify(error, ' ', 2));
 });
 
 function getUrlsForKeywords(keywords) {

@@ -3,7 +3,7 @@ const twit = require('twit');
 const winston = require('winston');
 
 const config = JSON.parse(fs.readFileSync('config.json'));
-const ids = JSON.parse(fs.readFileSync('processed_ids.json));
+const ids = JSON.parse(fs.readFileSync('processed_ids.json'));
 const library = JSON.parse(fs.readFileSync('urls.json'));
 const twitter = new twit(config);
 const stream = twitter.stream(
@@ -32,11 +32,12 @@ stream.on('tweet', (tweet) => {
   const urls = getUrlsForKeywords(keywords.split(' '));
   let status;
 
+  logger.log('debug', JSON.stringify(tweet, ' ', 2));
   ids.push(id);
   fs.writeFileSync('processed_ids.json', JSON.stringify(ids, ' ', 2));
 
   if (urls.join(' ').indexOf('http') < 0) {
-    status = urls.join(' ').;
+    status = urls.join(' ');
   } else if (whoFrom === config.screen_name) {
     return;
   }
@@ -46,12 +47,12 @@ stream.on('tweet', (tweet) => {
     const more = ' and 00 more';
     const extra = 0;
 
-    status = `${base}${keywords.trim()}: ${urls.join(' ').}`;
-    while (status.replaceAll(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
+    status = `${base}${keywords.trim()}: ${urls.join(' ')}`;
+    while (status.replace(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
       extra += 1;
       urls.pop();
       const end = more.replace('00', extra);
-      status = `${base}${keywords.trim()}: ${urls.join(' ').}${more}`;
+      status = `${base}${keywords.trim()}: ${urls.join(' ')}${more}`;
     }
   } else {
     status = `Sorry, I couldn't find anything on ${keywords.trim()}.`;

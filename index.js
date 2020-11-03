@@ -38,7 +38,9 @@ stream.on('tweet', (tweet) => {
 
   if (urls.join(' ').indexOf('http') < 0) {
     status = urls.join(' ');
-  } else if (whoFrom === config.screen_name) {
+  }
+
+  if (whoFrom === config.screen_name) {
     return;
   }
 

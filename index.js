@@ -32,6 +32,10 @@ stream.on('tweet', (tweet) => {
   const urls = getUrlsForKeywords(keywords.split(' '));
   let status;
 
+  if (ids.indexOf(id) >= 0) {
+    return;
+  }
+
   logger.log('debug', JSON.stringify(tweet, ' ', 2));
   ids.push(id);
   fs.writeFileSync('processed_ids.json', JSON.stringify(ids, ' ', 2));

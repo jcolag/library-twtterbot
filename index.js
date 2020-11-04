@@ -28,7 +28,10 @@ stream.on('tweet', (tweet) => {
   const whoFrom = tweet.user.screen_name;
   const start = text.indexOf(`@${config.screen_name}`) +
     config.screen_name.length + 1;
-  const keywords = text.slice(start);
+  const keywords = text
+    .slice(start)
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '');
   const urls = getUrlsForKeywords(keywords.split(' '));
   let status;
 

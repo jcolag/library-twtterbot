@@ -22,6 +22,16 @@ const logger = winston.createLogger({
   ],
 });
 
+library.forEach((item) => {
+  const keywords = item.keywords
+    .join(' ')
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .split(' ');
+
+  item.keywords = [...new Set([...item.keywords, ...keywords])]
+});
+
 stream.on('tweet', (tweet) => {
   const id = tweet.id_str;
   const text = tweet.text;

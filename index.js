@@ -27,6 +27,7 @@ library.forEach((item) => {
     .join(' ')
     .normalize('NFD')
     .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
     .split(' ');
 
   item.keywords = [...new Set([...item.keywords, ...keywords])]
@@ -41,7 +42,8 @@ stream.on('tweet', (tweet) => {
   const keywords = text
     .slice(start)
     .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '');
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase();
   const urls = getUrlsForKeywords(keywords.split(' '));
   let status;
 

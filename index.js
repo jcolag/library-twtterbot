@@ -30,6 +30,8 @@ library.forEach((item) => {
     .toLowerCase()
     .split(' ');
 
+  // Combine the original keywords and normalized keywords into a
+  // single array with no duplicates
   item.keywords = [...new Set([...item.keywords, ...keywords])]
 });
 
@@ -37,8 +39,10 @@ stream.on('tweet', (tweet) => {
   const id = tweet.id_str;
   const text = tweet.text;
   const whoFrom = tweet.user.screen_name;
+  // Skip everything before the bot is called
   const start = text.indexOf(`@${config.screen_name}`) +
     config.screen_name.length + 1;
+  // Normalize the keywords as lowercase letters with no diacritical marks
   const keywords = text
     .slice(start)
     .normalize('NFD')
@@ -48,17 +52,24 @@ stream.on('tweet', (tweet) => {
   let status;
 
   if (ids.indexOf(id) >= 0) {
+    // We've already seen this tweet
     return;
   }
 
+  // Record the tweet of the ID we're seeing, so that we can skip it
+  // in the future
   logger.log('debug', JSON.stringify(tweet, ' ', 2));
   ids.push(id);
   fs.writeFileSync('processed_ids.json', JSON.stringify(ids, ' ', 2));
 
+  // If there were responses and none of them were URLs, just treat the
+  // response like a message; this allows for custom responses, like replying
+  // coherently to someone thanking the bot
   if (urls.join(' ').indexOf('http') < 0) {
     status = urls.join(' ');
   }
 
+  // The bot should never reply to itself
   if (whoFrom === config.screen_name) {
     return;
   }
@@ -70,6 +81,9 @@ stream.on('tweet', (tweet) => {
 
     status = `${base}${keywords.trim()}: ${urls.join(' ')}`;
     while (status.replace(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
+      // In the unlikely event that the message doesn't fit into Twitter's
+      // character limit, the only reasonable thing to do is to trim URLs
+      // until it does fit, even though that doesn't reclaim much space
       extra += 1;
       urls.pop();
       const end = more.replace('00', extra);
@@ -82,6 +96,9 @@ stream.on('tweet', (tweet) => {
   twitter.post(
     'statuses/update',
     {
+      // Maybe this is overkill, but we need Twitter to recognize this
+      // as a reply to the user and inbound tweet, so better to specify
+      // too much than too little.
       in_reply_to_screen_name: whoFrom,
       in_reply_to_status_id: tweet.id,
       in_reply_to_status_id: tweet.id_str,

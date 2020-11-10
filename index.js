@@ -126,7 +126,7 @@ function getUrlsForKeywords(keywords) {
     const choice = library[i];
 
     for (let j = 0; j < keywords.length; j++) {
-      if (choice.keywords.indexOf(keywords[j]) >= 0) {
+      if (keywords[j].length > 0 && choice.keywords.indexOf(keywords[j]) >= 0) {
         urls.push(choice.url);
       }
     }

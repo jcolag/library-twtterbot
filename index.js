@@ -37,6 +37,29 @@ library.forEach((item) => {
 });
 
 stream.on('tweet', (tweet) => {
+  replyToTweet(tweet);
+});
+stream.on('error', (error) => {
+  logger.error(JSON.stringify(error, ' ', 2));
+});
+
+function getUrlsForKeywords(keywords) {
+  const urls = [];
+
+  for (let i = 0; i < library.length; i++) {
+    const choice = library[i];
+
+    for (let j = 0; j < keywords.length; j++) {
+      if (keywords[j].length > 0 && choice.keywords.indexOf(keywords[j]) >= 0) {
+        urls.push(choice.url);
+      }
+    }
+  }
+
+  return [...new Set(urls)];
+}
+
+function replyToTweet(tweet) {
   const id = tweet.id_str;
   const text = tweet.text;
   const whoFrom = tweet.user.screen_name;
@@ -114,23 +137,4 @@ stream.on('tweet', (tweet) => {
         logger.error(JSON.stringify(err, ' ', 2));
       }
     });
-});
-stream.on('error', (error) => {
-  logger.error(JSON.stringify(error, ' ', 2));
-});
-
-function getUrlsForKeywords(keywords) {
-  const urls = [];
-
-  for (let i = 0; i < library.length; i++) {
-    const choice = library[i];
-
-    for (let j = 0; j < keywords.length; j++) {
-      if (keywords[j].length > 0 && choice.keywords.indexOf(keywords[j]) >= 0) {
-        urls.push(choice.url);
-      }
-    }
-  }
-
-  return [...new Set(urls)];
 }

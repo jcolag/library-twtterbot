@@ -50,7 +50,9 @@ twitter.get(
     since_id: Math.max(...ids),
   },
   (err, data, response) => {
-    console.log(data);
+    data.forEach((tweet) => {
+      replyToTweet(tweet);
+    });
   }
 );
 

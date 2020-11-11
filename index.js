@@ -43,6 +43,17 @@ stream.on('error', (error) => {
   logger.error(JSON.stringify(error, ' ', 2));
 });
 
+twitter.get(
+  'statuses/mentions_timeline',
+  {
+    count: 200,
+    since_id: Math.max(...ids),
+  },
+  (err, data, response) => {
+    console.log(data);
+  }
+);
+
 function getUrlsForKeywords(keywords) {
   const urls = [];
 

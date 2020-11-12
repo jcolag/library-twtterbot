@@ -11,4 +11,4 @@ This project is intended to make it easier to make sure that consistent links ar
 
 My plan is to use [@replybrary](https://twitter.com/replybrary) itself for sociological links around which policies work and which do not, but that's just my personal agenda.  If *you* use this, you should try to fact-check your links before including them, otherwise your project to enlighten people will flop quickly.
 
-So far, the code only responds "live," when the program is running.  I will try to add a review of the history of the bot's twitter feed as time permits.
+The code will read mentions on startup (to a maximum of 200, minus deleted and otherwise hidden tweets) and process them, skipping any previously-seen tweets, as part of the start-up.  So, in the event of a crash, the program should be able to pick up whatever it missed while it was down, assuming that there haven't been two hundred requests before you can fix the problem.

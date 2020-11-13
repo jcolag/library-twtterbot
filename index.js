@@ -47,7 +47,6 @@ twitter.get(
   'statuses/mentions_timeline',
   {
     count: 200,
-    since_id: Math.max(...ids),
   },
   (err, data, response) => {
     data.forEach((tweet) => {

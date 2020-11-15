@@ -114,7 +114,7 @@ function replyToTweet(tweet) {
   if (urls.length > 0) {
     const base = "Here's what I found for ";
     const more = ' and 00 more';
-    const extra = 0;
+    let extra = 0;
 
     status = `${base}${keywords.trim()}: ${urls.join(' ')}`;
     while (status.replace(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
@@ -123,7 +123,7 @@ function replyToTweet(tweet) {
       // until it does fit, even though that doesn't reclaim much space
       extra += 1;
       urls.pop();
-      const end = more.replace('00', extra);
+      more.replace('00', extra);
       status = `${base}${keywords.trim()}: ${urls.join(' ')}${more}`;
     }
   } else {
@@ -138,7 +138,7 @@ function replyToTweet(tweet) {
       // too much than too little.
       in_reply_to_screen_name: whoFrom,
       in_reply_to_status_id: tweet.id,
-      in_reply_to_status_id: tweet.id_str,
+      in_reply_to_status_id_str: tweet.id_str,
       in_reply_to_user_id: tweet.user.id,
       in_reply_to_user_id_str: tweet.user.id_str,
       status: `@${whoFrom} ${status}`,
@@ -147,6 +147,8 @@ function replyToTweet(tweet) {
       if (err) {
         logger.error("Couldn't tweet:");
         logger.error(JSON.stringify(err, ' ', 2));
+      } else {
+        logger.info(data);
       }
     });
 }

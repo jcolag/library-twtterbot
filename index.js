@@ -6,19 +6,16 @@ const config = JSON.parse(fs.readFileSync('config.json'));
 const ids = JSON.parse(fs.readFileSync('processed_ids.json'));
 const library = JSON.parse(fs.readFileSync('urls.json'));
 const twitter = new twit(config);
-const stream = twitter.stream(
-  'statuses/filter',
-  { follow: [ config.user_id ] }
-);
+const stream = twitter.stream('statuses/filter', { follow: [config.user_id] });
 const logger = winston.createLogger({
   level: 'info',
   format: winston.format.combine(
     winston.format.timestamp(),
-    winston.format.json()
+    winston.format.json(),
   ),
   defaultMeta: { service: config.screen_name },
   transports: [
-    new winston.transports.File({ filename: `${config.screen_name}` })
+    new winston.transports.File({ filename: `${config.screen_name}` }),
   ],
 });
 
@@ -33,7 +30,7 @@ library.forEach((item) => {
 
   // Combine the original keywords and normalized keywords into a
   // single array with no duplicates
-  item.keywords = [...new Set([...item.keywords, ...keywords])]
+  item.keywords = [...new Set([...item.keywords, ...keywords])];
 });
 
 stream.on('tweet', (tweet) => {
@@ -52,7 +49,7 @@ twitter.get(
     data.forEach((tweet) => {
       replyToTweet(tweet);
     });
-  }
+  },
 );
 
 function getUrlsForKeywords(keywords) {
@@ -76,8 +73,8 @@ function replyToTweet(tweet) {
   const text = tweet.text;
   const whoFrom = tweet.user.screen_name;
   // Skip everything before the bot is called
-  const start = text.indexOf(`@${config.screen_name}`) +
-    config.screen_name.length + 1;
+  const start =
+    text.indexOf(`@${config.screen_name}`) + config.screen_name.length + 1;
   // Normalize the keywords as lowercase letters with no diacritical marks
   const keywords = text
     .slice(start)
@@ -150,5 +147,6 @@ function replyToTweet(tweet) {
       } else {
         logger.info(data);
       }
-    });
+    },
+  );
 }

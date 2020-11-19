@@ -10,5 +10,14 @@
   "dependencies": {
     "twit": "^2.2.11",
     "winston": "^3.3.3"
+  },
+  "devDependencies": {
+    "eslint": "^7.13.0"
+  },
+  "prettier": {
+    "trailingComma": "all",
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": true
   }
 }

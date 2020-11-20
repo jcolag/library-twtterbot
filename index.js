@@ -46,6 +46,12 @@ twitter.get(
     count: 200,
   },
   (err, data, response) => {
+    if (err) {
+      logger.error(JSON.stringify(error, ' ', 2));
+      logger.error(JSON.stringify(response, ' ', 2));
+      return;
+    }
+
     data.forEach((tweet) => {
       replyToTweet(tweet);
     });

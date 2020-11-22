@@ -120,17 +120,22 @@ function replyToTweet(tweet) {
     let extra = 0;
 
     status = `${base}${keywords.trim()}: ${urls.join(' ')}`;
-    while (status.replace(/(?:https?):\/\/[\n\S]+/g, '').length > 280) {
+    while (status.replace(/(?:https?):\/\/[\n\S]+/g, '').length > 280
+      && urls.length > 0) {
       // In the unlikely event that the message doesn't fit into Twitter's
       // character limit, the only reasonable thing to do is to trim URLs
       // until it does fit, even though that doesn't reclaim much space
       extra += 1;
       urls.pop();
       more.replace('00', extra);
-      status = `${base}${keywords.trim()}: ${urls.join(' ')}${more}`;
+      status = `${base} your keywords: ${urls.join(' ')}${more}`;
     }
   } else {
     status = `Sorry, I couldn't find anything on ${keywords.trim()}.`;
+  }
+
+  if (status.length > 280) {
+    status = status.slice(0, 276) + '...";
   }
 
   twitter.post(

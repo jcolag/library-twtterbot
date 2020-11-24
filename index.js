@@ -135,7 +135,7 @@ function replyToTweet(tweet) {
   }
 
   if (status.length > 280) {
-    status = status.slice(0, 276) + '...";
+    status = status.slice(0, 276) + '...';
   }
 
   twitter.post(
@@ -146,7 +146,6 @@ function replyToTweet(tweet) {
       // too much than too little.
       in_reply_to_screen_name: whoFrom,
       in_reply_to_status_id: tweet.id,
-      in_reply_to_status_id_str: tweet.id_str,
       in_reply_to_user_id: tweet.user.id,
       in_reply_to_user_id_str: tweet.user.id_str,
       status: `@${whoFrom} ${status}`,
